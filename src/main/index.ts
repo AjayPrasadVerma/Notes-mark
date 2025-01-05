@@ -1,7 +1,10 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { electronApp, is, optimizer } from '@electron-toolkit/utils'
+import { app, BrowserWindow, ipcMain, nativeTheme, shell } from 'electron'
 import { join } from 'path'
-import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+
+const isMac = process.platform === 'darwin'
+const isDarkMode = nativeTheme.shouldUseDarkColors
 
 function createWindow(): void {
   // Create the browser window.
@@ -11,6 +14,14 @@ function createWindow(): void {
     show: false,
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
+    center: true,
+    title: 'Note Mark',
+    frame: isMac ? false : true,
+    vibrancy: 'under-window',
+    visualEffectState: 'active',
+    titleBarStyle: isMac ? 'hidden' : undefined,
+    trafficLightPosition: { x: 15, y: 10 },
+    backgroundColor: isDarkMode ? '#121212' : '#FFFFFF',
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: true,
@@ -25,6 +36,11 @@ function createWindow(): void {
   mainWindow.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url)
     return { action: 'deny' }
+  })
+
+  nativeTheme.on('updated', () => {
+    const isDarkMode = nativeTheme.shouldUseDarkColors
+    mainWindow.setBackgroundColor(isDarkMode ? '#121212' : '#FFFFFF')
   })
 
   // HMR for renderer base on electron-vite cli.

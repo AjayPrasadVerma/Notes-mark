@@ -4,9 +4,11 @@
     "source.organizeImports": "always"
   },
   "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "files.autoSave": "afterDelay",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.wordWrap": "on",
-  "markdownlint.config": {
-    "MD041": false
-  }
+  "files.eol": "\n", 
+  "files.encoding": "utf8"
 }
