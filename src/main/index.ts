@@ -1,9 +1,9 @@
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
-import { GetNotes, ReadNote, WriteNote } from '@shared/types'
+import { CreateNote, GetNotes, ReadNote, WriteNote } from '@shared/types'
 import { app, BrowserWindow, ipcMain, nativeTheme, shell } from 'electron'
 import { join } from 'path'
 import icon from '../../resources/icon.png?asset'
-import { getNotes, readNote, writeNote } from './lib/index'
+import { createNote, getNotes, readNote, writeNote } from './lib/index'
 
 const isMac = process.platform === 'darwin'
 const isDarkMode = nativeTheme.shouldUseDarkColors
@@ -71,6 +71,7 @@ app.whenReady().then(() => {
   ipcMain.handle('getNotes', (_, ...args: Parameters<GetNotes>) => getNotes(...args))
   ipcMain.handle('readNote', (_, ...args: Parameters<ReadNote>) => readNote(...args))
   ipcMain.handle('writeNote', (_, ...args: Parameters<WriteNote>) => writeNote(...args))
+  ipcMain.handle('createNote', (_, ...args: Parameters<CreateNote>) => createNote(...args))
 
   createWindow()
 
